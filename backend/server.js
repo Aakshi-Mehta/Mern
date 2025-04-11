@@ -13,6 +13,7 @@ process.on("uncaughtException", (err) => {
 if (process.env.NODE_ENV !== "PRODUCTION") {
   require("dotenv").config({ path: "backend/config/config.env" });
 }
+const PORT=process.env.port || 4000; 
 
 // Connecting to database
 connectDatabase();
@@ -23,8 +24,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const server = app.listen(process.env.PORT, () => {
-  console.log(`Server is working on http://localhost:${process.env.PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`Server is working on http://localhost:${PORT}`);
 });
 
 // Unhandled Promise Rejection
