@@ -5,10 +5,9 @@ import {
   SAVE_SHIPPING_INFO,
 } from "../constants/cartConstants";
 
-
-// Add to Cart
+// ================= ADD TO CART =================
 export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
-  const { data } = await axios.get(`/api/v1/product/${id}`);
+  const { data } = await api.get(`/api/v1/product/${id}`);
 
   dispatch({
     type: ADD_TO_CART,
@@ -22,20 +21,26 @@ export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
     },
   });
 
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+  localStorage.setItem(
+    "cartItems",
+    JSON.stringify(getState().cart.cartItems)
+  );
 };
 
-// REMOVE FROM CART
+// ================= REMOVE FROM CART =================
 export const removeItemsFromCart = (id) => async (dispatch, getState) => {
   dispatch({
     type: REMOVE_CART_ITEM,
     payload: id,
   });
 
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+  localStorage.setItem(
+    "cartItems",
+    JSON.stringify(getState().cart.cartItems)
+  );
 };
 
-// SAVE SHIPPING INFO
+// ================= SAVE SHIPPING INFO =================
 export const saveShippingInfo = (data) => async (dispatch) => {
   dispatch({
     type: SAVE_SHIPPING_INFO,
