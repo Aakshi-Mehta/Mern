@@ -2,6 +2,7 @@
 require("dotenv").config({ path: "./config/config.env" });
 
 const app = require("./app");
+app.set("trust proxy", 1);
 const cloudinary = require("cloudinary");
 const connectDatabase = require("./config/database");
 

@@ -58,6 +58,8 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
     httpOnly: true,
+    secure: true,      // REQUIRED for Vercel
+    sameSite: "none",  // REQUIRED for cross-domain
   });
 
   res.status(200).json({
@@ -78,10 +80,9 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const resetToken = user.getResetPasswordToken();
 
   await user.save({ validateBeforeSave: false });
+  const FRONTEND_URL = "https://mern-qwzcs4zo5-aakshi-mehtas-projects.vercel.app";
+  const resetPasswordUrl = `${FRONTEND_URL}/password/reset/${resetToken}`;
 
-  const resetPasswordUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/password/reset/${resetToken}`;
 
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
 

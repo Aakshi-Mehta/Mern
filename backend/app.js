@@ -4,7 +4,6 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const fileUpload = require("express-fileupload");
 const path = require("path");
-const cors = require("cors");
 
 const errorMiddleware = require("./middleware/error");
 
@@ -12,6 +11,8 @@ const errorMiddleware = require("./middleware/error");
 require("dotenv").config({ path: "./config/config.env" });
 
 // ================= CORS (CRITICAL FIX) =================
+const cors = require("cors");
+
 const allowedOrigins = [
   "http://localhost:3000",
   "https://mern-qwzcs4zo5-aakshi-mehtas-projects.vercel.app",
@@ -20,7 +21,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
+      // allow requests with no origin (Postman, mobile apps)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
