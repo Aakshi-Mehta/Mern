@@ -1,3 +1,4 @@
+import api from "../api";
 import {
   LOGIN_REQUEST,
   LOGIN_FAIL,
@@ -36,7 +37,7 @@ import {
   USER_DETAILS_FAIL,
   CLEAR_ERRORS,
 } from "../constants/userConstants";
-import axios from "axios";
+
 
 // Login
 export const login = (email, password) => async (dispatch) => {

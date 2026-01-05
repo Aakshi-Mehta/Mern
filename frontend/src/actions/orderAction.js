@@ -1,3 +1,4 @@
+import api from "../api";
 import {
   CREATE_ORDER_REQUEST,
   CREATE_ORDER_SUCCESS,
@@ -20,7 +21,7 @@ import {
   CLEAR_ERRORS,
 } from "../constants/orderConstants";
 
-import axios from "axios";
+
 
 // Create Order
 export const createOrder = (order) => async (dispatch) => {

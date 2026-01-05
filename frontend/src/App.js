@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import WebFont from "webfontloader";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+
+import api from "./api"; // ✅ axios instance
+
 import Home from "./component/Home/Home";
 import Header from "./component/layout/Header/Header";
 import Footer from "./component/layout/Footer/Footer";
@@ -48,21 +50,6 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchStripeApiKey = async () => {
-      try {
-        const token = localStorage.getItem("authToken"); // Replace with your actual token retrieval method
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-        const { data } = await axios.get("/api/v1/stripeapikey", { headers });
-        setStripeApiKey(data.stripeApiKey);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching Stripe API key:", error);
-        setLoading(false);
-      }
-    };
-
     WebFont.load({
       google: {
         families: ["Roboto", "Droid Sans", "Chilanka"],
@@ -70,13 +57,24 @@ const App = () => {
     });
 
     store.dispatch(loadUser());
+
+    const fetchStripeApiKey = async () => {
+      try {
+        const { data } = await api.get("/api/v1/stripeapikey");
+        setStripeApiKey(data.stripeApiKey);
+      } catch (error) {
+        console.error("Error fetching Stripe API key:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchStripeApiKey();
   }, []);
 
   window.addEventListener("contextmenu", (e) => e.preventDefault());
 
   if (loading) {
-    // Optional: Show a loading indicator while fetching data
     return <div>Loading...</div>;
   }
 
@@ -84,14 +82,17 @@ const App = () => {
     <BrowserRouter>
       <Header />
       {isAuthenticated && <UserOptions user={user} />}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/search" element={<Search />} />
         <Route path="/products/:keyword" element={<Products />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
+        <Route path="/login" element={<LoginSignUp />} />
+
         <Route
           path="/account"
           element={<ProtectedRoute element={<Profile />} />}
@@ -106,7 +107,6 @@ const App = () => {
         />
         <Route path="/password/forgot" element={<ForgotPassword />} />
         <Route path="/password/reset/:token" element={<ResetPassword />} />
-        <Route path="/login" element={<LoginSignUp />} />
         <Route path="/cart" element={<Cart />} />
         <Route
           path="/login/shipping"
@@ -116,6 +116,7 @@ const App = () => {
           path="/order/confirm"
           element={<ProtectedRoute element={<ConfirmOrder />} />}
         />
+
         {stripeApiKey && (
           <Route
             path="/process/payment"
@@ -126,6 +127,7 @@ const App = () => {
             }
           />
         )}
+
         <Route
           path="/success"
           element={<ProtectedRoute element={<OrderSuccess />} />}
@@ -138,6 +140,8 @@ const App = () => {
           path="/order/:id"
           element={<ProtectedRoute element={<OrderDetails />} />}
         />
+
+        {/* Admin */}
         <Route
           path="/admin/dashboard"
           element={<ProtectedRoute element={<Dashboard />} />}
@@ -174,8 +178,10 @@ const App = () => {
           path="/admin/reviews"
           element={<ProtectedRoute element={<ProductReviews />} />}
         />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
+
       <Footer />
     </BrowserRouter>
   );
