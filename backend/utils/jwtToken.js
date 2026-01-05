@@ -1,3 +1,5 @@
+//for tokens to loginned users
+
 // Create Token and saving in cookie
 
 const sendToken = (user, statusCode, res) => {

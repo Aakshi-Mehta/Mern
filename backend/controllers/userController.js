@@ -25,7 +25,7 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
       url: myCloud.secure_url,
     },
   });
-  sendToken(user, 201, res);
+  sendToken(user, 201, res); //so that user loginned rahe
 });
 
 // Login User
@@ -38,7 +38,7 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHander("Please Enter Email & Password", 400));
   }
 
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password");//+password since humne password select false kra hai userModels mein
 
   if (!user) {
     return next(new ErrorHander("Invalid email or password", 401));

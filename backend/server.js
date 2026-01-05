@@ -1,3 +1,7 @@
+// Config
+
+require("dotenv").config({ path: "./config/config.env" });
+
 const app = require("./app");
 const cloudinary = require("cloudinary");
 const connectDatabase = require("./config/database");
@@ -10,9 +14,10 @@ process.on("uncaughtException", (err) => {
 });
 
 // Config
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({ path: "backend/config/config.env" });
-}
+
+require("dotenv").config({ path: "./config/config.env" });
+
+
 
 // Connecting to database
 connectDatabase();
@@ -27,7 +32,7 @@ const server = app.listen(process.env.PORT, () => {
   console.log(`Server is working on http://localhost:${process.env.PORT}`);
 });
 
-// Unhandled Promise Rejection
+// Unhandled Promise Rejection---due to MOngoDB Connection falied 
 process.on("unhandledRejection", (err) => {
   console.log(`Error: ${err.message}`);
   console.log(`Shutting down the server due to Unhandled Promise Rejection`);

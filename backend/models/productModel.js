@@ -19,7 +19,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  images: [
+  images: [  //images require publicid and url in CLOUDINARY ...Hence aise kiya hai
     {
       public_id: {
         type: String,
@@ -45,7 +45,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  reviews: [
+  reviews: [  //array of objects
     {
       user: {
         type: mongoose.Schema.ObjectId,

@@ -5,7 +5,7 @@ const ApiFeatures = require("../utils/apifeatures");
 const cloudinary = require("cloudinary");
 
 //CREATE PRODUCT--Admin
-exports.createProduct = catchAsyncErrors(async (req, res, next) => {
+exports.createProduct = catchAsyncErrors(async (req, res, next) => {   //CatchAsyncErrors--exclusively for async error---basically hume baar baar try catch fior async await nahi likhna padega
   let images = [];
 
   if (typeof req.body.images === "string") {
@@ -41,7 +41,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 // GET ALL PRODUCTS
 exports.getAllProducts = catchAsyncErrors(async (req, res) => {
   const resultPerPage = 8;
-  const productsCount = await Product.countDocuments();
+  const productsCount = await Product.countDocuments();     //already ek function hai
 
   // Initialize ApiFeatures without pagination
   const apiFeatureInitial = new ApiFeatures(Product.find(), req.query)

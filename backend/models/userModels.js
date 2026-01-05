@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please Enter Your Password"],
     minLength: [8, "Password should be greater than 8 characters"],
-    select: false,
+    select: false, //matlab jab hum project access kare tabhi hum password nhi mile
   },
   avatar: {
     public_id: {
@@ -47,14 +47,14 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+  if (!this.isModified("password")) {  // agar user ne email ya details change ki but password change nhi kiya to hashed pwd change nahi hoga same rahega and bcrypt wali jo line hai vo execute nhi hogi
     next();
   }
 
-  this.password = await bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10); // first baar password dala ya phir [assword update kiya]
 });
 
-// JWT TOKEN
+// JWT TOKEN--so that registered user loginned rahe
 userSchema.methods.getJWTToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
@@ -63,7 +63,7 @@ userSchema.methods.getJWTToken = function () {
 // Compare Password
 
 userSchema.methods.comparePassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+  return await bcrypt.compare(password, this.password);//bcrypt ka self compare method hai
 };
 
 // Generating Password Reset Token

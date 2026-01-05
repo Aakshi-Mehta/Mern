@@ -1,5 +1,30 @@
+/*📦 Purpose:
+This class (ApiFeatures) helps us search, filter, and paginate data from a MongoDB database, especially useful for APIs in an e-commerce or blog site.
+
+🛠 What each method does:
+1. search()
+Searches by name if a keyword is given in the query.
+
+Uses MongoDB’s $regex to allow case-insensitive partial matches (like searching "samosa" will find "SAMOSA", "samosas", etc.).
+
+2. filter()
+Removes fields like keyword, page, and limit from the query (since they’re used for other purposes).
+
+Supports filtering by values like price and rating, using MongoDB operators (gt, lt, etc.).
+
+Converts things like price[gte]=500 into { price: { $gte: 500 } }.
+
+3. pagination(resultPerPage)
+Breaks the results into pages.
+
+Skips results from previous pages and only returns the items for the current page.
+
+Example: If 10 results per page and you're on page 2 → it skips the first 10 results.*/
+
+//for searching querying filtering pagination
+
 class ApiFeatures {
-  constructor(query, queryStr) {
+  constructor(query, queryStr) {   // query is normal http query jo hum bhejenge ...queryStr is jab hum usme "keyword " add karde jaise name=samosa...postman mein we can add keywords to filter our search vahi hamara queryStr hota hai
     this.query = query;
     this.queryStr = queryStr;
   }
